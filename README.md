@@ -7,3 +7,4 @@
 
 # Описание архитектуры
 [as_is](uml/as_is.drawio)
+as_is в формате [png](uml/as_is.png)
