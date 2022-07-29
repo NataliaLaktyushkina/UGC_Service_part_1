@@ -10,7 +10,7 @@
 
 as_is в формате [png](uml/as_is.png)
 
-#Spark Jupyter
+# Spark Jupyter
 
 Задание №1 - рассчитанный [rating by reviews](/data/combined/rating_by_reviews)
 
