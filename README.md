@@ -7,3 +7,13 @@
 
 # Описание архитектуры
 [as_is](uml/as_is.drawio)
+
+as_is в формате [png](uml/as_is.png)
+
+#Spark Jupyter
+
+Задание №1 - рассчитанный [rating by reviews](/data/combined/rating_by_reviews)
+
+Задание №2 - в [products.csv](/data/combined/products_with_ratings.csv) добавлена колонка "rating_by_reviews"
+
+[Код](/data/Ice-cream%20rating.ipynb)
