@@ -12,8 +12,13 @@ as_is в формате [png](uml/as_is.png)
 
 # Spark Jupyter
 
-Задание №1 - рассчитанный [rating by reviews](/data/combined/rating_by_reviews)
+Задание №1 - рассчитанный [rating by reviews](/spark_data/combined/rating_by_reviews)
 
-Задание №2 - в [products.csv](/data/combined/products_with_ratings.csv) добавлена колонка "rating_by_reviews"
+Задание №2 - в [products.csv](/spark_data/combined/products_with_ratings.csv) добавлена колонка "rating_by_reviews"
 
-[Код](/data/Ice_cream_rating.ipynb)
+[Код](/spark_data/Ice_cream_rating.ipynb)
+
+# ClickHouse
+
+[Схема](/click_house/clickhouse_schema.drawio) кластера 
+
