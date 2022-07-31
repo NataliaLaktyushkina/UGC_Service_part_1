@@ -15,6 +15,10 @@
 
 as_is в формате [png](uml/as_is.png)
 
+[to_be](uml/to_be.drawio)
+
+to_be в формате [png](uml/to_be.png)
+
 # Spark Jupyter
 
 Задание №1 - рассчитанный [rating by reviews](/spark_data/combined/rating_by_reviews)
