@@ -31,6 +31,8 @@ to_be в формате [png](uml/to_be.png)
 
 [Схема](/click_house/clickhouse_schema.drawio) кластера 
 
+В формате [.png](/click_house/click_house_schema.png)
+
 # Исследование выбор хранилища
 
 В результате вашего исследования у вас должны быть:
