@@ -1,6 +1,6 @@
 from fastapi import Depends
-from service import AbstractEventStorage, Kafka_Event_Storage
-from aiokafka import AIOKafkaProducer
+from service import AbstractEventStorage, KafkaEventStorage
+from db.oltp_kafka import get_kafka
 
 
 class EventHandler:
@@ -15,4 +15,4 @@ class EventHandler:
 def get_event_handler(
         event_storage: AbstractEventStorage = Depends(get_kafka)
 ) -> EventHandler:
-    return EventHandler(AIOKafkaProducer(event_storage))
+    return EventHandler(KafkaEventStorage(event_storage))
