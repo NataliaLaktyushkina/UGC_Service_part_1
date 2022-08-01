@@ -14,5 +14,4 @@ class EventAccepted(BaseOrjsonModel):
     """
         This is the description of event response  model (event caught or not)
     """
-    caught: bool
-
+    accepted: bool
