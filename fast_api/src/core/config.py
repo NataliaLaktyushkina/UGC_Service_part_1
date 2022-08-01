@@ -13,8 +13,10 @@ class Settings(BaseSettings):
 class PromSettings(Settings):
     pass
 
+
 class DevSettings(Settings):
     pass
+
 
 def get_settings():
     environment = os.getenv('ENVIRONMENT')
