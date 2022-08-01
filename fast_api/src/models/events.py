@@ -10,6 +10,12 @@ class Event(BaseOrjsonModel):
     type: str = Field(..., description='type of event')
 
 
+class EventMovieView(Event):
+    topic: str
+    value: str
+    key: str
+
+
 class EventAccepted(BaseOrjsonModel):
     """
         This is the description of event response  model (event caught or not)

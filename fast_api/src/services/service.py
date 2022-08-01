@@ -1,7 +1,7 @@
 import abc
 from aiokafka import AIOKafkaProducer
 from aiokafka.errors import KafkaError
-
+from models.events import EventMovieView
 
 class AbstractEventStorage(abc.ABC):
 
@@ -11,15 +11,18 @@ class AbstractEventStorage(abc.ABC):
 
 
 class KafkaEventStorage(AbstractEventStorage):
-    def __init__(self):
-        self.producer = AIOKafkaProducer(bootstrap_servers='localhost:9092')
+    def __init__(self, producer: AIOKafkaProducer):
+        self.producer = producer
 
-    async def send_event(self, event: str) -> bool:
+    async def send_event(self, event: EventMovieView) -> bool:
         # Get cluster layout and initial topic/partition leadership information
         await self.producer.start()
         try:
             # Produce message
-            await self.producer.send_and_wait("my_topic", b"Super message")
+            await self.producer.send_and_wait(topic=event.topic,
+                                              value=event.value,
+                                              key=event.key)
+
             event_was_sent = True
         except KafkaError:
             event_was_sent = False
