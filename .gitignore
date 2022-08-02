@@ -1,1 +1,3 @@
 /examples
+.env
+docker-compose.override.yml
