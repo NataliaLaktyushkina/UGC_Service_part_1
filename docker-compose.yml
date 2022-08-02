@@ -9,9 +9,21 @@ services:
     networks:
       - ugc_service
 
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - fast_api
+    networks:
+      - ugc_service
+
 networks:
    ugc_service:
      name: ugc_network
+
 
 
 
