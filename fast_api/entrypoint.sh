@@ -1,13 +1,12 @@
 #!/bin/sh
 
-echo "Waiting for Elasticsearch..."
+echo "Waiting for Kafka..."
 
-#while ! nc -z $ES_HOST $ES_PORT; do
-while ! nc -z elasticsearch 9200; do
+while ! nc -z broker 29092; do
   sleep 2
 done
 
-echo "Elasticsearch started"
+echo "Kafka started"
 
-gunicorn -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8100 main:app
+gunicorn -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8101 main:app
 
