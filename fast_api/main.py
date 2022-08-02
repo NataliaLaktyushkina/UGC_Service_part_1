@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
 from api.v1 import events
-from core.config import settings
 from db import oltp_kafka
 from aiokafka import AIOKafkaProducer
 from core.config import settings
@@ -32,5 +31,5 @@ if __name__ == '__main__':
     uvicorn.run(
         'main:app',
         host='0.0.0.0',
-        port=8100,
+        port=8101,
     )

@@ -18,6 +18,6 @@ class EventMovieView(Event):
 
 class EventAccepted(BaseOrjsonModel):
     """
-        This is the description of event response  model (event caught or not)
+        This is the description of event response  model (event accepted or not)
     """
     accepted: bool

@@ -1,5 +1,5 @@
 from fastapi import Depends
-from service import AbstractEventStorage, KafkaEventStorage
+from services.service import AbstractEventStorage, KafkaEventStorage
 from db.oltp_kafka import get_kafka
 from models.events import EventMovieView, EventAccepted
 
@@ -10,7 +10,7 @@ class EventHandler:
 
     async def handle(self, event: EventMovieView) -> EventAccepted:
         event_accepted = await self.event_storage.send_event(event)
-        return event_accepted
+        return EventAccepted(accepted=event_accepted)
 
 
 def get_event_handler(

@@ -1,5 +1,11 @@
 import os
 from pydantic import BaseSettings
+from dotenv import load_dotenv
+
+IS_DOCKER = os.environ.get('AM_I_IN_A_DOCKER_CONTAINER', False)
+
+if not IS_DOCKER:
+    load_dotenv()   # take environment variables from .env.
 
 
 class Settings(BaseSettings):
