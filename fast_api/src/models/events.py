@@ -2,6 +2,8 @@ from pydantic import Field
 
 from .json_config import BaseOrjsonModel
 
+from core.config import settings
+
 
 class Event(BaseOrjsonModel):
     """
@@ -11,7 +13,7 @@ class Event(BaseOrjsonModel):
 
 
 class EventMovieView(Event):
-    topic: str
+    topic = settings.TOPIC
     value: str
     key: str
 
