@@ -1,11 +1,12 @@
 import uvicorn
-from fastapi import FastAPI
+from aiokafka import AIOKafkaProducer
+from fastapi import FastAPI, Depends
 from fastapi.responses import ORJSONResponse
 
 from api.v1 import events
-from db import oltp_kafka
-from aiokafka import AIOKafkaProducer
 from core.config import settings
+from db import oltp_kafka
+from services.jwt_check import JWTBearer
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -13,6 +14,8 @@ app = FastAPI(
     openapi_url='/api/openapi.json',
     default_response_class=ORJSONResponse,
 )
+
+PROTECTED = [Depends(JWTBearer())]
 
 
 @app.on_event('startup')
@@ -25,7 +28,7 @@ async def shutdown():
     await oltp_kafka.db_kafka.stop()
 
 
-app.include_router(events.router, prefix='/api/v1/events', tags=['events'])
+app.include_router(events.router, prefix='/api/v1/events', tags=['events'], dependencies=PROTECTED)
 
 if __name__ == '__main__':
     uvicorn.run(

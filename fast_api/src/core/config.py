@@ -12,6 +12,11 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = os.getenv('PROJECT_NAME', 'UGC_API')
 
     KAFKA_PORT: str = os.getenv('KAFKA_PORT')
+    TOPIC: str = os.getenv('TOPIC')
+
+    # JWT SETTINGS
+    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY")
+    JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM")
 
     class Config:
         env_file = '.env'
