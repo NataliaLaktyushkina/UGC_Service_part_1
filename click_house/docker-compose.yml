@@ -5,6 +5,8 @@ services:
     image: zookeeper:3.5
     container_name: zookeeper_ch
     hostname: zookeeper
+    networks:
+      - ugc_service
 
   clickhouse-node1:
     image: yandex/clickhouse-server:20.4
@@ -17,6 +19,8 @@ services:
       - ./data/node1:/etc/clickhouse-server
     depends_on:
       - zookeeper
+    networks:
+      - ugc_service
 
   clickhouse-node2:
     image: yandex/clickhouse-server:20.4
@@ -26,6 +30,8 @@ services:
       - ./data/node2:/etc/clickhouse-server
     depends_on:
       - zookeeper
+    networks:
+      - ugc_service
 
   clickhouse-node3:
     image: yandex/clickhouse-server:20.4
@@ -35,6 +41,8 @@ services:
       - ./data/node3:/etc/clickhouse-server
     depends_on:
       - zookeeper
+    networks:
+      - ugc_service
 
   clickhouse-node4:
     image: yandex/clickhouse-server:20.4
@@ -44,3 +52,10 @@ services:
       - ./data/node4:/etc/clickhouse-server
     depends_on:
       - zookeeper
+    networks:
+      - ugc_service
+
+networks:
+  ugc_service:
+    name: ugc_network
+

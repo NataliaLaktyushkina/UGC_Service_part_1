@@ -13,11 +13,10 @@ RUN apt update && apt install -y netcat && which nc
 RUN pip install --no-cache-dir --upgrade pip &&\
  pip install --no-cache-dir -r requirements.txt
 
-#Копируем приложение
+# Copy application
 COPY ./app /app
 
-# create entrypoint for DB waiting
-# Копируем entrypoint.sh
+# create entrypoint for Kafka and ClickHouse waiting
 COPY ./entrypoint.sh .
 RUN chmod +x entrypoint.sh
 

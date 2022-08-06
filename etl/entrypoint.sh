@@ -19,4 +19,4 @@ done
 echo "Clickhouse started"
 
 #exec "$@"
-python app.main.py
+python main.py
