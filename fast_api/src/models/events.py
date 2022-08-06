@@ -14,8 +14,8 @@ class Event(BaseOrjsonModel):
 
 class EventMovieView(Event):
     topic = settings.TOPIC
-    value: str
     key: str
+    value: str
 
 
 class EventAccepted(BaseOrjsonModel):
