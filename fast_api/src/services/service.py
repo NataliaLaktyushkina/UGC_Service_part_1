@@ -1,7 +1,8 @@
 import abc
-import json
+
 from aiokafka import AIOKafkaProducer
 from aiokafka.errors import KafkaError
+
 from models.events import EventMovieView
 
 

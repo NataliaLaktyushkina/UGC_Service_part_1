@@ -20,6 +20,16 @@ services:
     networks:
       - ugc_service
 
+  etl:
+    container_name: etl
+    build:
+        context: etl
+    depends_on:
+      - fast_api
+    networks:
+      - ugc_service
+
+
 networks:
    ugc_service:
      name: ugc_network

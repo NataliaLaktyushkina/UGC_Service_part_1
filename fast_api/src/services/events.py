@@ -1,6 +1,6 @@
 from fastapi import Depends
 from services.service import AbstractEventStorage, KafkaEventStorage
-from db.oltp_kafka import get_kafka
+from db.eventbus_kafka import get_kafka
 from models.events import EventMovieView, EventAccepted
 
 
