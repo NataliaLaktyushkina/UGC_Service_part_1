@@ -1,4 +1,5 @@
 from utils.etl_connection import connect_to_consumer
+from core.logger import logger
 
 
 async def extract_data():
@@ -9,8 +10,9 @@ async def extract_data():
 
             data = {'topic': msg.topic,
                     'key': msg.key,
-                    'value': msg.value}
-            print(data)
+                    'value': msg.value,
+                    'timestamp': msg.timestamp}
+            logger.info(msg=data)
 
     finally:
         await consumer.stop()
