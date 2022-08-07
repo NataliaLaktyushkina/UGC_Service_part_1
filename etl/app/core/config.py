@@ -22,14 +22,12 @@ class PromSettings(Settings):
     KAFKA_PORT: str = os.getenv('KAFKA_PORT')
 
     CLICK_HOUSE_HOST: str = os.getenv('CLICK_HOUSE_HOST')
-    CLICK_HOUSE_PORT: str = os.getenv('CLICK_HOUSE_PORT')
 
 
 class DevSettings(Settings):
     KAFKA_HOST: str
     KAFKA_PORT: str
     CLICK_HOUSE_HOST: str
-    CLICK_HOUSE_PORT: str
 
     class Config:
         fields = {
@@ -41,9 +39,6 @@ class DevSettings(Settings):
             },
             "CLICK_HOUSE_HOST": {
                 'env': 'CLICK_HOUSE_HOST_DEBUG'
-            },
-            "CLICK_HOUSE_PORT": {
-                'env': 'CLICK_HOUSE_PORT_DEBUG'
             }
         }
 
