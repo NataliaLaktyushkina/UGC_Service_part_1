@@ -15,7 +15,7 @@ async def extract_data():
                     'timestamp': msg.timestamp}
             logger.info(msg=data)
 
-            transform_data(data=data)
+            transform_data(kafka_data=data)
 
     finally:
         await consumer.stop()
