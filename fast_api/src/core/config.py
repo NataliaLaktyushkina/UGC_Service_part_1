@@ -11,7 +11,6 @@ if not IS_DOCKER:
 class Settings(BaseSettings):
     PROJECT_NAME: str = os.getenv('PROJECT_NAME', 'UGC_API')
 
-    KAFKA_PORT: str = os.getenv('KAFKA_PORT')
     TOPIC: str = os.getenv('TOPIC')
 
     # JWT SETTINGS
@@ -25,15 +24,20 @@ class Settings(BaseSettings):
 
 class PromSettings(Settings):
     KAFKA_HOST: str = os.getenv('KAFKA_HOST')
+    KAFKA_PORT: str = os.getenv('KAFKA_PORT')
 
 
 class DevSettings(Settings):
     KAFKA_HOST: str
+    KAFKA_PORT: str
 
     class Config:
         fields = {
             "KAFKA_HOST": {
                 'env': 'KAFKA_HOST_DEBUG'
+            },
+            "KAFKA_PORT": {
+                'env': 'KAFKA_PORT_DEBUG'
             }
         }
 

@@ -1,8 +1,6 @@
 import asyncio
 
 from extract import extract_data
-from utils.etl_connection import backoff
-
 
 
 async def etl():
