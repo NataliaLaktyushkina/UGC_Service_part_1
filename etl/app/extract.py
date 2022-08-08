@@ -1,6 +1,6 @@
-from utils.etl_connection import connect_to_consumer
 from core.logger import logger
-from load import load
+from transform import transform_data
+from utils.etl_connection import connect_to_consumer
 
 
 async def extract_data():
@@ -10,12 +10,12 @@ async def extract_data():
         async for msg in consumer:
 
             data = {'topic': msg.topic,
-                    'key': msg.key,
+                    'key': msg.key,  # user_id:movie_id
                     'value': msg.value,
                     'timestamp': msg.timestamp}
             logger.info(msg=data)
 
-            load(data=data)
+            transform_data(data=data)
 
     finally:
         await consumer.stop()
