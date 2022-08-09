@@ -9,7 +9,7 @@ if not IS_DOCKER:
 
 
 class Settings(BaseSettings):
-    KAFKA_PORT: str = os.getenv('KAFKA_PORT')
+
     TOPIC: str = os.getenv('TOPIC')
 
     class Config:
@@ -19,15 +19,26 @@ class Settings(BaseSettings):
 
 class PromSettings(Settings):
     KAFKA_HOST: str = os.getenv('KAFKA_HOST')
+    KAFKA_PORT: str = os.getenv('KAFKA_PORT')
+
+    CLICK_HOUSE_HOST: str = os.getenv('CLICK_HOUSE_HOST')
 
 
 class DevSettings(Settings):
     KAFKA_HOST: str
+    KAFKA_PORT: str
+    CLICK_HOUSE_HOST: str
 
     class Config:
         fields = {
             "KAFKA_HOST": {
                 'env': 'KAFKA_HOST_DEBUG'
+            },
+            "KAFKA_PORT": {
+                'env': 'KAFKA_PORT_DEBUG'
+            },
+            "CLICK_HOUSE_HOST": {
+                'env': 'CLICK_HOUSE_HOST_DEBUG'
             }
         }
 

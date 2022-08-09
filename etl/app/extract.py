@@ -1,5 +1,6 @@
-from utils.etl_connection import connect_to_consumer
 from core.logger import logger
+from transform import transform_data
+from utils.etl_connection import connect_to_consumer
 
 
 async def extract_data():
@@ -9,10 +10,12 @@ async def extract_data():
         async for msg in consumer:
 
             data = {'topic': msg.topic,
-                    'key': msg.key,
+                    'key': msg.key,  # user_id:movie_id
                     'value': msg.value,
                     'timestamp': msg.timestamp}
             logger.info(msg=data)
+
+            transform_data(kafka_data=data)
 
     finally:
         await consumer.stop()
