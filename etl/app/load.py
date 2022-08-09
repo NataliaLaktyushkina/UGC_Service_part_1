@@ -30,8 +30,8 @@ def create_table(client: Client):
 def load_data(data: dict, client: Client):
     if data:
         insert_query = 'INSERT INTO analytics.movie_view_history ' \
-                       '(user_id, movie_id, movie_timestamp, created_at) ' \
-                       ' VALUES (%(user_id)s,' \
+                       '(id, user_id, movie_id, movie_timestamp, created_at) ' \
+                       ' VALUES (generateUUIDv4(), %(user_id)s,' \
                        '%(movie_id)s, %(movie_timestamp)s, %(created_at)s)'
 
         client.execute(query=insert_query,
