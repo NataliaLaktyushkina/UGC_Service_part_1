@@ -8,8 +8,8 @@ class EventHandler:
     def __init__(self, event_storage: AbstractEventStorage):
         self.event_storage = event_storage
 
-    async def handle(self, event: EventMovieView) -> EventAccepted:
-        event_accepted = await self.event_storage.send_event(event)
+    async def handle(self, event: EventMovieView, user_id: str) -> EventAccepted:
+        event_accepted = await self.event_storage.send_event(event, user_id)
         return EventAccepted(accepted=event_accepted)
 
 
