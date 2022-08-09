@@ -1,4 +1,5 @@
-
+import uuid
+from uuid import UUID
 from pydantic import Field, validator
 
 from core.config import settings
@@ -21,6 +22,14 @@ class EventParams(Event):
     def key_must_contain_userid_movieid(cls, value):
         if ':' not in value:
             raise ValueError('must contain ":"')
+        try:
+            user_id, movie_id = value.split(':')
+            if not isinstance(uuid.UUID(user_id), UUID):
+                raise ValueError('user_id  must be UUID')
+            if not isinstance(uuid.UUID(movie_id), UUID):
+                raise ValueError('movie_id must be UUID')
+        except:
+            raise ValueError(f'user_id and movie_id must be UUID. Key = {value}')
         return value
 
 
