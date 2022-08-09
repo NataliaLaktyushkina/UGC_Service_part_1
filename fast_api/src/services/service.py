@@ -9,7 +9,7 @@ from models.events import EventMovieView
 class AbstractEventStorage(abc.ABC):
 
     @abc.abstractmethod
-    def send_event(self, event: EventMovieView) -> bool:
+    def send_event(self, event: EventMovieView, user_id: str) -> bool:
         pass
 
 
@@ -19,7 +19,7 @@ class KafkaEventStorage(AbstractEventStorage):
         # (>= queue.buffering.max.ms) served by internal threads and sent to the broker
         self.producer = producer
 
-    async def send_event(self, event: EventMovieView) -> bool:
+    async def send_event(self, event: EventMovieView, user_id: str) -> bool:
         """Publishes records to the Kafka cluster"""
 
         # Get cluster layout and initial topic/partition leadership information
@@ -29,7 +29,7 @@ class KafkaEventStorage(AbstractEventStorage):
             # Produce message
             await self.producer.send_and_wait(topic=event.topic,
                                               value=event.value.encode(),
-                                              key=event.key.encode())
+                                              key=':'.join((user_id, event.movie_id)).encode())
 
             event_was_sent = True
         except KafkaError as error:

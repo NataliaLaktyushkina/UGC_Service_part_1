@@ -15,23 +15,8 @@ class Event(BaseOrjsonModel):
 
 class EventMovieView(Event):
     topic = settings.TOPIC
-    key: str
+    movie_id: str
     value: str
-
-    @validator('key')
-    def key_must_contain_userid_movieid(cls, value):
-        if ':' not in value:
-            return ValueError('must contain :')
-        return value
-
-    @validator('value')
-    def value_must_be_timestamp(cls, value):
-        try:
-            value_date = datetime.fromtimestamp(value)
-        except OverflowError:
-            return ValueError('must be timestamp')
-        return value
-
 
 
 class EventAccepted(BaseOrjsonModel):
