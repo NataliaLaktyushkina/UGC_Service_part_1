@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 
-from models.events import EventMovieView, EventAccepted, EventValidationError
+from api.v1.event_params import EventParams
+from models.events import EventMovieView, EventAccepted
 from services.events import EventHandler, get_event_handler
-from api.v1.event_params  import get_event_params
 from services.jwt_check import JWTBearer
 
 router = APIRouter()
@@ -11,7 +11,7 @@ router = APIRouter()
 @router.post('/', description="Post UGC event",
              response_model=EventAccepted,
              response_description='UGC event was posted')
-async def post_event(event: EventMovieView = Depends(get_event_params()),
+async def post_event(event: EventMovieView = Depends(EventParams),
                      user_id: str= Depends(JWTBearer()),
                      service: EventHandler = Depends(get_event_handler)) -> EventAccepted:
 
