@@ -20,8 +20,10 @@ PROTECTED = [Depends(JWTBearer())]
 
 @app.on_event('startup')
 async def startup():
-    eventbus_kafka.db_kafka = AIOKafkaProducer(bootstrap_servers=f'{settings.KAFKA_HOST}:{settings.KAFKA_PORT}',
-                                           max_batch_size=1000)
+    kafka_settings = settings.kafka_settings
+    eventbus_kafka.db_kafka = AIOKafkaProducer(
+        bootstrap_servers=f'{kafka_settings.KAFKA_HOST}:{kafka_settings.KAFKA_PORT}',
+        max_batch_size=1000)
 
 
 @app.on_event('shutdown')
