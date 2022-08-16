@@ -1,3 +1,4 @@
 /examples
 .env
 docker-compose.override.yml
+/click_house/data/

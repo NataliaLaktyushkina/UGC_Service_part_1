@@ -38,9 +38,10 @@ def backoff(start_sleep_time=0.1, factor=2, border_sleep_time=10):
 
 @backoff()
 def connect_to_consumer():
+    kafka_settings = settings.kafka_settings
     consumer = aiokafka.AIOKafkaConsumer(
         settings.TOPIC,
-        bootstrap_servers=f'{settings.KAFKA_HOST}:{settings.KAFKA_PORT}'
+        bootstrap_servers=f'{kafka_settings.KAFKA_HOST}:{kafka_settings.KAFKA_PORT}'
     )
     return consumer
 

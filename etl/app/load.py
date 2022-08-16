@@ -1,52 +1,56 @@
-from clickhouse_driver import Client
+from uuid import uuid4
+
+from aiochclient import ChClient
+from aiohttp import ClientSession
+
 from core.config import settings
 from core.logger import logger
 
 
-def create_client():
-    client = Client(host=settings.CLICK_HOUSE_HOST)
-    return client
+async def create_client(data):
+    async with ClientSession() as s:
+        ch_settings = settings.click_house_settings
+        client = ChClient(s, url=f'http://{ch_settings.CLICK_HOUSE_HOST}:{ch_settings.CLICK_HOUSE_PORT}')
+        await create_db(client)
+        await create_table(client)
+        await load_data(data, client)
 
 
-def create_db(client: Client):
-    client.execute('CREATE DATABASE '
-                   'IF NOT EXISTS analytics '
-                   'ON CLUSTER company_cluster')
+async def create_db(client: ChClient):
+    await client.execute('CREATE DATABASE '
+                         'IF NOT EXISTS analytics '
+                         'ON CLUSTER company_cluster')
 
 
-def create_table(client: Client):
-    client.execute('CREATE TABLE '
-                   'IF NOT EXISTS analytics.movie_view_history '
-                   'ON CLUSTER company_cluster '
-                   '(id UUID,'
-                   'user_id UUID, '
-                   'movie_id UUID, '
-                   'movie_timestamp DateTime ,'
-                   'created_at DateTime) '
-                   'Engine=MergeTree() ORDER BY id')
-    client.execute('SELECT * FROM analytics.movie_view_history')
+async def create_table(client: ChClient):
+    await client.execute('CREATE TABLE '
+                         'IF NOT EXISTS analytics.movie_view_history '
+                         'ON CLUSTER company_cluster '
+                         '(`id` UUID,'
+                         '`user_id` UUID, '
+                         '`movie_id` UUID, '
+                         '`movie_timestamp` DateTime ,'
+                         '`created_at` DateTime) '
+                         'Engine=MergeTree() ORDER BY id')
+    logger.info(await client.execute('SELECT * FROM analytics.movie_view_history'))
 
 
-def load_data(data: dict, client: Client):
+async def load_data(data: dict, client: ChClient):
     if data:
         insert_query = 'INSERT INTO analytics.movie_view_history ' \
                        '(id, user_id, movie_id, movie_timestamp, created_at) ' \
-                       ' VALUES (generateUUIDv4(), %(user_id)s,' \
-                       '%(movie_id)s, %(movie_timestamp)s, %(created_at)s)'
+                       ' VALUES '
+        await client.execute(insert_query,
+                             (uuid4(),
+                              data["user_id"],
+                              data["movie_id"],
+                              data["movie_timestamp"],
+                              data["created_at"],
+                              ))
 
-        client.execute(query=insert_query,
-                       params=data)
-        # check
-        logger.info(client.execute('SELECT * FROM analytics.movie_view_history '
-                                   'ORDER BY created_at desc '
-                                   'LIMIT 1'))
 
-
-def load(data: dict):
-    client = create_client()
-    create_db(client)
-    create_table(client)
-    load_data(data, client)
+async def load(data: dict):
+    await create_client(data)
 
 
 if __name__ == '__main__':

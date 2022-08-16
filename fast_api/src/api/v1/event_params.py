@@ -25,5 +25,3 @@ class EventParams(Event):
         return value
 
 
-def get_event_params():
-    return EventParams

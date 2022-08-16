@@ -1,9 +1,7 @@
-from pydantic import Field, validator
-
-from .json_config import BaseOrjsonModel
+from pydantic import Field
 
 from core.config import settings
-from datetime import datetime
+from .json_config import BaseOrjsonModel
 
 
 class Event(BaseOrjsonModel):
