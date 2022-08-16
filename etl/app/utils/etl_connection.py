@@ -41,7 +41,8 @@ def connect_to_consumer():
     kafka_settings = settings.kafka_settings
     consumer = aiokafka.AIOKafkaConsumer(
         settings.TOPIC,
-        bootstrap_servers=f'{kafka_settings.KAFKA_HOST}:{kafka_settings.KAFKA_PORT}'
+        bootstrap_servers=f'{kafka_settings.KAFKA_HOST}:{kafka_settings.KAFKA_PORT}',
+        auto_commit_interval_ms=1000,  # Autocommit every second
     )
     return consumer
 

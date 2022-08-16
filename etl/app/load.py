@@ -1,4 +1,4 @@
-from uuid import uuid4
+from typing import List
 
 from aiochclient import ChClient
 from aiohttp import ClientSession
@@ -7,7 +7,7 @@ from core.config import settings
 from core.logger import logger
 
 
-async def create_client(data):
+async def create_client(data: List[tuple]):
     async with ClientSession() as s:
         ch_settings = settings.click_house_settings
         client = ChClient(s, url=f'http://{ch_settings.CLICK_HOUSE_HOST}:{ch_settings.CLICK_HOUSE_PORT}')
@@ -35,27 +35,16 @@ async def create_table(client: ChClient):
     logger.info(await client.execute('SELECT * FROM analytics.movie_view_history'))
 
 
-async def load_data(data: dict, client: ChClient):
+async def load_data(data: List[tuple], client: ChClient):
     if data:
         insert_query = 'INSERT INTO analytics.movie_view_history ' \
                        '(id, user_id, movie_id, movie_timestamp, created_at) ' \
                        ' VALUES '
+
         await client.execute(insert_query,
-                             (uuid4(),
-                              data["user_id"],
-                              data["movie_id"],
-                              data["movie_timestamp"],
-                              data["created_at"],
-                              ))
+                             *data
+                             )
 
 
-async def load(data: dict):
+async def load(data: List[tuple]):
     await create_client(data)
-
-
-if __name__ == '__main__':
-    data = {'user_id': '49d9bf90-780f-4a1b-862a-1291af77b624',
-            'movie_id': '5ab0ad6c-d190-445e-a260-d79460e49394',
-            'movie_timestamp': '1659508485',
-            'created_at': '1659508485'}
-    load(data)

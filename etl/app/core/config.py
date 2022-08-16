@@ -31,6 +31,7 @@ class ClickHouseDevSettings(BaseModel):
 class Settings(BaseSettings):
 
     TOPIC: str = os.getenv('TOPIC')
+    BATCH_SIZE: int = os.getenv('BATCH_SIZE')
 
     class Config:
         env_file = '.env'
