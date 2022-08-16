@@ -5,9 +5,10 @@ from aiohttp import ClientSession
 
 from core.config import settings
 from core.logger import logger
+from typing import List
 
 
-async def create_client(data):
+async def create_client(data: List[dict]):
     async with ClientSession() as s:
         ch_settings = settings.click_house_settings
         client = ChClient(s, url=f'http://{ch_settings.CLICK_HOUSE_HOST}:{ch_settings.CLICK_HOUSE_PORT}')
@@ -35,21 +36,51 @@ async def create_table(client: ChClient):
     logger.info(await client.execute('SELECT * FROM analytics.movie_view_history'))
 
 
-async def load_data(data: dict, client: ChClient):
+async def load_data(data: List[dict], client: ChClient):
     if data:
         insert_query = 'INSERT INTO analytics.movie_view_history ' \
                        '(id, user_id, movie_id, movie_timestamp, created_at) ' \
                        ' VALUES '
+        # await client.execute(insert_query,
+        #                      (uuid4(),
+        #                       data["user_id"],
+        #                       data["movie_id"],
+        #                       data["movie_timestamp"],
+        #                       data["created_at"],
+        #                       ))
+        insert_data = []
+        for msg in data:
+            insert_data.append((
+                uuid4(),
+                msg["user_id"],
+                msg["movie_id"],
+                msg["movie_timestamp"],
+                msg["created_at"],
+            ))
+
         await client.execute(insert_query,
-                             (uuid4(),
-                              data["user_id"],
-                              data["movie_id"],
-                              data["movie_timestamp"],
-                              data["created_at"],
-                              ))
+                             *insert_data
+                             )
+        # await client.execute(insert_query,
+        #                      (
+        #                          uuid4(),
+        #                          data[0]["user_id"],
+        #                          data[0]["movie_id"],
+        #                          data[0]["movie_timestamp"],
+        #                          data[0]["created_at"],
+        #                      ),
+        #                      (
+        #                          uuid4(),
+        #                          data[1]["user_id"],
+        #                          data[1]["movie_id"],
+        #                          data[1]["movie_timestamp"],
+        #                          data[1]["created_at"],
+        #                      ),
+        #
+        #                      )
 
 
-async def load(data: dict):
+async def load(data: List[dict]):
     await create_client(data)
 
 
