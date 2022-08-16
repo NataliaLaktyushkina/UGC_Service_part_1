@@ -1,11 +1,31 @@
 import os
-from pydantic import BaseSettings
+from pydantic import BaseSettings, BaseModel
 from dotenv import load_dotenv
 
 IS_DOCKER = os.environ.get('AM_I_IN_A_DOCKER_CONTAINER', False)
 
 if not IS_DOCKER:
     load_dotenv()   # take environment variables from .env.
+
+
+class KafkaPromSettings(BaseModel):
+    KAFKA_HOST: str = os.getenv('KAFKA_HOST')
+    KAFKA_PORT: str = os.getenv('KAFKA_PORT')
+
+
+class KafkaDevSettings(BaseModel):
+    KAFKA_HOST: str = os.getenv('KAFKA_HOST_DEBUG')
+    KAFKA_PORT: str = os.getenv('KAFKA_PORT_DEBUG')
+
+
+class ClickHousePromSettings(BaseModel):
+    CLICK_HOUSE_HOST: str = os.getenv('CLICK_HOUSE_HOST')
+    CLICK_HOUSE_PORT: str = os.getenv('CLICK_HOUSE_PORT')
+
+
+class ClickHouseDevSettings(BaseModel):
+    CLICK_HOUSE_HOST: str = os.getenv('CLICK_HOUSE_HOST_DEBUG')
+    CLICK_HOUSE_PORT: str = os.getenv('CLICK_HOUSE_PORT')
 
 
 class Settings(BaseSettings):
@@ -18,45 +38,21 @@ class Settings(BaseSettings):
 
 
 class PromSettings(Settings):
-    KAFKA_HOST: str = os.getenv('KAFKA_HOST')
-    KAFKA_PORT: str = os.getenv('KAFKA_PORT')
-
-    CLICK_HOUSE_HOST: str = os.getenv('CLICK_HOUSE_HOST')
+    kafka_settings: KafkaPromSettings = KafkaPromSettings()
+    click_house_settings: ClickHousePromSettings = ClickHousePromSettings()
 
 
 class DevSettings(Settings):
-    KAFKA_HOST: str
-    KAFKA_PORT: str
-    CLICK_HOUSE_HOST: str
-
-    class Config:
-        fields = {
-            "KAFKA_HOST": {
-                'env': 'KAFKA_HOST_DEBUG'
-            },
-            "KAFKA_PORT": {
-                'env': 'KAFKA_PORT_DEBUG'
-            },
-            "CLICK_HOUSE_HOST": {
-                'env': 'CLICK_HOUSE_HOST_DEBUG'
-            }
-        }
+    kafka_settings: KafkaDevSettings = KafkaDevSettings()
+    click_house_settings: ClickHouseDevSettings = ClickHouseDevSettings()
 
 
 def get_settings():
     environment = os.getenv('ENVIRONMENT')
     if environment == 'prom':
-        return get_prom_settings()
+        return PromSettings()
     else:
-        return get_dev_settings()
-
-
-def get_prom_settings():
-    return PromSettings()
-
-
-def get_dev_settings():
-    return DevSettings()
+        return DevSettings()
 
 
 settings = get_settings()
