@@ -1,6 +1,7 @@
 from core.logger import logger
 from transform import transform_data
 from utils.etl_connection import connect_to_consumer
+from core.config import settings
 
 
 async def extract_data():
@@ -17,8 +18,9 @@ async def extract_data():
                     'timestamp': msg.timestamp}
             logger.info(msg=data)
             batch.append(data)
-            if len(batch)>=2:
+            if len(batch) >= settings.BATCH_SIZE:
                 await transform_data(kafka_data=batch)
+                batch = []
 
     finally:
         await consumer.stop()

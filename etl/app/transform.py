@@ -16,5 +16,12 @@ async def transform_data(kafka_data: List[dict]):
         created_at = int(msg['timestamp']/1000)
         data['created_at'] = datetime.fromtimestamp(created_at)
 
-        processed_data.append(data)
+        processed_data.append((
+                uuid.uuid4(),
+                data["user_id"],
+                data["movie_id"],
+                data["movie_timestamp"],
+                data["created_at"],
+            ))
+
     await load(processed_data)
